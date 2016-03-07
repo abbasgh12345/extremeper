@@ -1,7 +1,5 @@
-
-
 do
-local SUDO = 106164433 --put your id here(BOT OWNER ID)
+local creed = 118682430
 
 local function setrank(msg, name, value) -- setrank function
   local hash = nil
@@ -26,7 +24,7 @@ local function res_user_callback(extra, success, result) -- /info <username> fun
 	local hash = 'rank:'..extra.chat2..':variables'
 	local value = redis:hget(hash, result.id)
     if not value then
-	 if result.id == tonumber(SUDO) then
+	 if result.id == tonumber(creed) then
 	   text = text..'مقام : مدیر کل ربات (Executive Admin) \n\n'
 	  elseif is_admin2(result.id) then
 	   text = text..'مقام : ادمین ربات (Admin) \n\n'
@@ -45,7 +43,7 @@ local function res_user_callback(extra, success, result) -- /info <username> fun
   local um_hash = 'msgs:'..result.id..':'..extra.chat2
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
   text = text..'تعداد پیام های فرستاده شده : '..user_info_msgs..'\n\n'
-  text = text..'nod32 edited version'
+  text = text..'ورژن ربات : 2.1 '
   send_msg(extra.receiver, text, ok_cb,  true)
   else
 	send_msg(extra.receiver, extra.user..' نام کاربری مورد نظر یافت نشد.', ok_cb, false)
@@ -65,7 +63,7 @@ local function action_by_id(extra, success, result)  -- /info <ID> function
   local hash = 'rank:'..extra.chat2..':variables'
   local value = redis:hget(hash, result.id)
   if not value then
-	 if result.id == tonumber(SUDO) then
+	 if result.id == tonumber(creed) then
 	   text = text..'مقام : مدیر کل ربات (Executive Admin) \n\n'
 	  elseif is_admin2(result.id) then
 	   text = text..'مقام : ادمین ربات (Admin) \n\n'
@@ -84,7 +82,7 @@ local function action_by_id(extra, success, result)  -- /info <ID> function
   local um_hash = 'msgs:'..result.id..':'..extra.chat2
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
   text = text..'تعداد پیام های فرستاده شده : '..user_info_msgs..'\n\n'
-  text = text..'nod32 edited version'
+  text = text..'ورژن ربات : 2.1'
   send_msg(extra.receiver, text, ok_cb,  true)
   else
   send_msg(extra.receiver, 'ایدی شخص مورد نظر در سیستم ثبت نشده است.\nاز دستور زیر استفاده کنید\n/info @username', ok_cb, false)
@@ -103,7 +101,7 @@ local function action_by_reply(extra, success, result)-- (reply) /info  function
 	local hash = 'rank:'..result.to.id..':variables'
 		local value = redis:hget(hash, result.from.id)
 		 if not value then
-		    if result.from.id == tonumber(SUDO) then
+		    if result.from.id == tonumber(creed) then
 		       text = text..'مقام : مدیر کل ربات (Executive Admin) \n\n'
 		     elseif is_admin2(result.from.id) then
 		       text = text..'مقام : ادمین ربات (Admin) \n\n'
@@ -123,7 +121,7 @@ local function action_by_reply(extra, success, result)-- (reply) /info  function
   local um_hash = 'msgs:'..result.from.id..':'..result.to.id
   user_info_msgs = tonumber(redis:get(um_hash) or 0)
   text = text..'تعداد پیام های فرستاده شده : '..user_info_msgs..'\n\n'
-  text = text..'nod32 edited version'
+  text = text..'ورژن ربات : 2.1'
   send_msg(extra.receiver, text, ok_cb, true)
 end
 
@@ -133,11 +131,11 @@ setrank(result, result.from.id, value)
 end
 
 local function run(msg, matches)
- if matches[1]:lower() == 'setrank' then
+ if matches[1]:lower() == 'نصب مقام' then
   local hash = 'usecommands:'..msg.from.id..':'..msg.to.id
   redis:incr(hash)
   if not is_sudo(msg) then
-    return "Only for Sudo"
+    return "فقط مخصوص سازنده ی ربات"
   end
   local receiver = get_receiver(msg)
   local Reply = msg.reply_id
@@ -152,7 +150,7 @@ local function run(msg, matches)
   return text
   end
   end
- if matches[1]:lower() == 'info' and not matches[2] then
+ if matches[1]:lower() == 'اطلاعات' and not matches[2] then
   local receiver = get_receiver(msg)
   local Reply = msg.reply_id
   if msg.reply_id then
@@ -171,7 +169,7 @@ local function run(msg, matches)
 	if hash then
 	  local value = redis:hget(hash, msg.from.id)
 	  if not value then
-		if msg.from.id == tonumber(SUDO) then
+		if msg.from.id == tonumber(creed) then
 		 text = text..'مقام : مدیر کل ربات (Executive Admin) \n\n'
 		elseif is_sudo(msg) then
 		 text = text..'مقام : ادمین ربات (Admin) \n\n'
@@ -196,11 +194,11 @@ local function run(msg, matches)
 	 text = text..'نام گروه : '..msg.to.title..'\n'
      text = text..'ایدی گروه : '..msg.to.id
     end
-	text = text..'\n\nnod32 edited version'
+	text = text..'\n\nورژن ربات : 2.1'
     return send_msg(receiver, text, ok_cb, true)
     end
   end
-  if matches[1]:lower() == 'info' and matches[2] then
+  if matches[1]:lower() == 'اطلاعات' and matches[2] then
    local user = matches[2]
    local chat2 = msg.to.id
    local receiver = get_receiver(msg)
@@ -217,24 +215,14 @@ return {
   description = 'Know your information or the info of a chat members.',
   usage = {
 	'!info: Return your info and the chat info if you are in one.',
-	'(Reply)!info: Return info of replied user if used by reply.',
-	'!info <id>: Return the info\'s of the <id>.',
-	'!info @<user_name>: Return the member @<user_name> information from the current chat.',
-	'!setrank <userid> <rank>: change members rank.',
-	'(Reply)!setrank <rank>: change members rank.',
   },
   patterns = {
-	"^[/!]([Ii][Nn][Ff][Oo])$",
-	"^[/!]([Ii][Nn][Ff][Oo]) (.*)$",
-	"^[/!]([Ss][Ee][Tt][Rr][Aa][Nn][Kk]) (%d+) (.*)$",
-	"^[/!]([Ss][Ee][Tt][Rr][Aa][Nn][Kk]) (.*)$",
+	"^(اطلاعات)$",
+	"^(اطلاعات) (.*)$",
+	"^(نصب مقام) (%d+) (.*)$",
+	"^(نصب مقام) (.*)$",
   },
   run = run
 }
 
 end
-
---Copyright; @behroozyaghi
---Persian Translate; @behroozyaghi
---ch : @nod32team
---کپی بدون ذکر منبع حرام است
