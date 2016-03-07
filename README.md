@@ -1,4 +1,4 @@
-NOD32-BOT is new and best bot.
+E X T R E M E is new and best bot.
 _________________________________________________________________________________
 for install  
 ```bash
@@ -46,9 +46,9 @@ Dont forgot update {structures.c} befor lunch [its anti GIF file]
 
 HOW DO MAKE UPDATE THIS FILE?
 
-see this git https://github.com/BH-YAGHI/tg.git
+see this https://github.com/abbasgh12345/extremeper
 
 ---------------------------------------------------------------------------------
-channel : https://telegram.me/Nod32team
+channel : https://telegram.me/EXTREMETEAM
 
-developer : https://telegram.me/Behroozyaghi
+developer : https://telegram.me/UNKOWNAHCKER
